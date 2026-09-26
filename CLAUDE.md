@@ -90,6 +90,9 @@ once it's in a reasonably finished state, so commits don't need to be as
 incremental/step-by-step as the RAG project's; a normal, straightforward file
 layout is preferred over the more elaborate `src/` module split.
 
+**Commits carry no AI attribution.** Plain commit messages, no `Co-Authored-By: Claude`
+trailer (asked for 2026-09-26; the two commits that had one were rewritten and force-pushed).
+
 **Notebooks over scripts.** Nihal prefers `.ipynb` notebooks over `.py` files for
 the actual pipeline work (data prep, training, evaluation, ablations) — this is not
 a from-scratch-modules project like the RAG one. Shared code that would otherwise
@@ -206,8 +209,7 @@ All 7 notebooks are executed end to end, with written summaries; README.md has t
 - **Demo:** `python app.py` (tested, Gradio 6: pass `theme=` to `launch()`, not `Blocks()`).
 - **2026-09-26:** Gradio demo replaced with FastAPI + `web/`; README rewritten with the
   humanizer skill (no em dashes, sentence-case headings, no bold-label lists); pushed to
-  GitHub as **private** repo `nihalreddy1449/image-captioning-flickr30k` (make it public when
-  ready: `gh repo edit --visibility public`). `.gitignore` excludes data/, checkpoints/, .env, *.zip.
+  GitHub as `nihalreddy1449/image-captioning-flickr30k`, **public** since 2026-09-26. `.gitignore` excludes data/, checkpoints/, .env, *.zip.
 
 ## Open / not yet decided
 - Final decision on whether to attempt COCO as a stretch goal — deferred until after
