@@ -74,10 +74,13 @@ sections and every mention were removed. Evaluation is the standard metrics plus
 paired-bootstrap significance analysis in notebook 07.
 
 ## Interface / demo
-**Built (2026-09-22): `app.py`.** Gradio app: upload an image, pick decoder
-(Transformer / LSTM), training objective (cross-entropy / SCST) and decoding
-(greedy / beam, defaulting to the val-tuned settings), and get the caption plus a
-word-by-word attention map. Models load lazily from `checkpoints/`.
+**Rebuilt 2026-09-26 as a custom front-end** (Nihal found the Gradio version too
+template-like). `app.py` is now a small FastAPI API; the page lives in `web/`
+(`index.html`, `style.css`, `app.js`), hand-written in a clean light style.
+Upload/drag/paste an image or click a sample, pick decoder, training objective and
+decoding, and get the caption plus word-by-word attention tiles. `/?sample=<file>`
+captions that sample on load. Run with `python app.py` (http://127.0.0.1:8000).
+Gradio was removed from requirements.
 
 ## Workflow
 Building with Claude Code, working directly in the project directory. This is a
@@ -201,7 +204,10 @@ All 7 notebooks are executed end to end, with written summaries; README.md has t
   human caption (`viz.show_captions` row height now accounts for the row gap, which fixes the
   overlapping text); `app.py` demo added.
 - **Demo:** `python app.py` (tested, Gradio 6: pass `theme=` to `launch()`, not `Blocks()`).
-- **Not done yet:** GitHub push. A `.gitignore` excluding data/ and checkpoints/ is in place.
+- **2026-09-26:** Gradio demo replaced with FastAPI + `web/`; README rewritten with the
+  humanizer skill (no em dashes, sentence-case headings, no bold-label lists); pushed to
+  GitHub as **private** repo `nihalreddy1449/image-captioning-flickr30k` (make it public when
+  ready: `gh repo edit --visibility public`). `.gitignore` excludes data/, checkpoints/, .env, *.zip.
 
 ## Open / not yet decided
 - Final decision on whether to attempt COCO as a stretch goal — deferred until after
