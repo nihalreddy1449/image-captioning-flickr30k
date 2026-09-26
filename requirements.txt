@@ -1,0 +1,15 @@
+# PyTorch with CUDA: install from the PyTorch index matching your CUDA version, e.g.
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu130
+torch>=2.13
+torchvision>=0.28
+numpy>=2.5
+pandas>=3.0
+jinja2>=3.1          # pandas Styler tables in the notebooks
+matplotlib>=3.11
+pillow>=12.3
+pycocoevalcap>=1.2   # METEOR and the PTB tokenizer also need Java (JRE 11+) on PATH
+ipykernel>=7.3
+nbconvert>=7.17
+fastapi>=0.115       # app.py demo API
+uvicorn>=0.30        # serves app.py
+python-multipart>=0.0.9  # image uploads in the demo

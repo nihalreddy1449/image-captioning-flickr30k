@@ -1,0 +1,7 @@
+# Large or private files: keep out of the repository
+data/
+checkpoints/
+.env
+__pycache__/
+.ipynb_checkpoints/
+*.zip

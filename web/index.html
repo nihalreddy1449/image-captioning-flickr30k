@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image captioning · Flickr30k</title>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Flickr30k · frozen ResNet-50 encoder · decoders trained from scratch</p>
+    <h1>Image captioning with a Transformer and an LSTM decoder</h1>
+    <p class="lede">
+      Two decoders trained on the same 7×7 grid features, before and after self-critical fine-tuning.
+      Upload a photo to see what each one writes and which parts of the image it was looking at.
+    </p>
+  </div>
+</header>
+
+<main class="wrap layout">
+  <section class="panel" aria-labelledby="input-heading">
+    <h2 id="input-heading" class="panel-title">Image</h2>
+
+    <div id="dropzone" class="dropzone" tabindex="0" role="button"
+         aria-label="Upload an image: click, drop a file, or paste">
+      <img id="preview" alt="" hidden>
+      <div class="dropzone-empty">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><path d="M12 16V4m0 0L8 8m4-4 4 4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+        <p><strong>Drop an image</strong> or click to choose</p>
+        <p class="muted">You can also paste from the clipboard</p>
+      </div>
+      <input id="file" type="file" accept="image/*" hidden>
+    </div>
+
+    <div class="samples">
+      <span class="field-label">Or try one</span>
+      <div id="samples" class="sample-row"></div>
+    </div>
+
+    <div class="controls">
+      <div class="field">
+        <span class="field-label" id="decoder-label">Decoder</span>
+        <div class="segmented" role="radiogroup" aria-labelledby="decoder-label">
+          <label><input type="radio" name="decoder" value="transformer" checked><span>Transformer</span></label>
+          <label><input type="radio" name="decoder" value="lstm"><span>LSTM + attention</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field-label" id="training-label">Training</span>
+        <div class="segmented" role="radiogroup" aria-labelledby="training-label">
+          <label><input type="radio" name="training" value="xe"><span>Cross-entropy</span></label>
+          <label><input type="radio" name="training" value="scst" checked><span>+ SCST</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field-label" id="strategy-label">Decoding</span>
+        <div class="segmented" role="radiogroup" aria-labelledby="strategy-label">
+          <label><input type="radio" name="strategy" value="greedy"><span>Greedy</span></label>
+          <label><input type="radio" name="strategy" value="beam" checked><span>Beam search</span></label>
+        </div>
+      </div>
+
+      <div id="beam-fields" class="field beam">
+        <label class="checkline">
+          <input type="checkbox" id="tuned" checked>
+          <span>Use the beam settings tuned on validation</span>
+        </label>
+        <div class="beam-inputs">
+          <label class="mini">Beam size
+            <input type="number" id="beam-size" min="2" max="10" step="1" value="5" disabled>
+          </label>
+          <label class="mini">Length penalty α
+            <select id="length-penalty" disabled>
+              <option value="0">0</option>
+              <option value="0.5">0.5</option>
+              <option value="1" selected>1</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <button id="run" class="primary" type="button" disabled>Generate caption</button>
+    <p id="status" class="status" role="status"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="output-heading">
+    <h2 id="output-heading" class="panel-title">Caption</h2>
+
+    <div id="placeholder" class="placeholder">
+      <p>The caption and its attention maps will appear here.</p>
+    </div>
+
+    <figure id="result" class="result" hidden>
+      <blockquote id="caption"></blockquote>
+      <figcaption id="meta" class="meta"></figcaption>
+    </figure>
+
+    <div id="attention-block" hidden>
+      <h3 class="subhead">Where the decoder looked, word by word</h3>
+      <p class="muted small">Each tile shows the image with attention for that word brightened. The encoder sees a squashed 224×224 crop of the photo.</p>
+      <div id="tiles" class="tiles"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap footnote">
+  <p>
+    Frozen ImageNet ResNet-50 features (7×7×2048); decoders written from scratch in PyTorch and trained on the
+    Karpathy split of Flickr30k. Numbers next to each model are its CIDEr score on the 1,000-image test split.
+  </p>
+  <p id="device" class="muted small"></p>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

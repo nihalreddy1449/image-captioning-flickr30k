@@ -1,0 +1,5 @@
+{
+  "run": "dropout 0.3",
+  "dropout": 0.3,
+  "weight_decay": 0.01
+}
